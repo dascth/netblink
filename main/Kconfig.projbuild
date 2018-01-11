@@ -12,4 +12,16 @@ config WIFI_PASSWORD
     help
         WiFi password (WPA or WPA2) for the example to use.
 
+config OUTPUT_GPIO
+    int "Output Device GPIO Number"
+    default 26
+    help
+        The GPIO number used to control the output device (example: light switch).
+
+config OUTPUT_POLARITY_SWAP
+    bool "Swap Output Polarity"
+    default y
+    help
+        Set this if you want the output device to have low voltage mean ON and high voltage to mean OFF.
+
 endmenu

@@ -4,12 +4,14 @@ First you should configure the project by "make menuconfig":
   Example Configuration -> 
     1. WIFI SSID: WIFI network to which your PC is also connected to. 
     2. WIFI Password: WIFI password
+    3. Output Device GPIO Number: The GPIO number used to control the output device (example: light switch).
+    4. Swap Output Polarity: Set this if you want the output device to have low voltage mean ON and high voltage to mean OFF.
     
 To test out: 
   1. compile the code and flash it 
-  2. input the context of "https://my.esp.ip.goes.here/blink" into your web browser to cause it to blink once an LED on GPIO 4
-  2. input the context of "https://my.esp.ip.goes.here/turnon" into your web browser to cause it to turn on an LED on GPIO 4
-  2. input the context of "https://my.esp.ip.goes.here/turnoff" into your web browser to cause it to turn off an LED on GPIO 4
+  2. input the context of "https://my.esp.ip.goes.here/blink" into your web browser to cause it to blink once
+  2. input the context of "https://my.esp.ip.goes.here/switchon" into your web browser to cause it to turn on
+  2. input the context of "https://my.esp.ip.goes.here/switchoff" into your web browser to cause it to turn off
   3. You may see that it shows the website is not able to be trusted, but you should select that "go on to visit it"
   
 Note:

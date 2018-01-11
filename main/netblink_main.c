@@ -29,6 +29,9 @@ static EventGroupHandle_t wifi_event_group;
    to the AP with an IP? */
 const static int CONNECTED_BIT = BIT0;
 
+const static int ON = LIGHTSWITCH_POLARITY_SWAP ? 0: 1;
+const static int OFF = LIGHTSWITCH_POLARITY_SWAP ? 1: 0;
+
 const static char *TAG = "netblink";
 
 typedef enum
@@ -73,18 +76,15 @@ typedef enum
 
 static void blink_once_task(void *p)
 {
-    gpio_set_direction(GPIO_NUM_4, GPIO_MODE_OUTPUT);
-    int level = 0;
+    gpio_set_direction(LIGHTSWITCH_GPIO, GPIO_MODE_OUTPUT);
 
-    gpio_set_level(GPIO_NUM_4, level);
-	level = !level;
+    gpio_set_level(LIGHTSWITCH_GPIO, OFF);
 	vTaskDelay(300 / portTICK_PERIOD_MS);
 
-    gpio_set_level(GPIO_NUM_4, level);
-	level = !level;
+    gpio_set_level(LIGHTSWITCH_GPIO, ON);
 	vTaskDelay(300 / portTICK_PERIOD_MS);
 
-    gpio_set_level(GPIO_NUM_4, level);
+    gpio_set_level(LIGHTSWITCH_GPIO, OFF);
 
     vTaskDelete(NULL);
     return ;
@@ -92,8 +92,8 @@ static void blink_once_task(void *p)
 
 static void switch_on_task(void *p)
 {
-    gpio_set_direction(GPIO_NUM_4, GPIO_MODE_OUTPUT);
-    gpio_set_level(GPIO_NUM_4, 1);
+    gpio_set_direction(LIGHTSWITCH_GPIO, GPIO_MODE_OUTPUT);
+    gpio_set_level(LIGHTSWITCH_GPIO, ON);
 
     vTaskDelete(NULL);
     return ;
@@ -101,8 +101,8 @@ static void switch_on_task(void *p)
 
 static void switch_off_task(void *p)
 {
-    gpio_set_direction(GPIO_NUM_4, GPIO_MODE_OUTPUT);
-    gpio_set_level(GPIO_NUM_4, 0);
+    gpio_set_direction(LIGHTSWITCH_GPIO, GPIO_MODE_OUTPUT);
+    gpio_set_level(LIGHTSWITCH_GPIO, OFF);
 
     vTaskDelete(NULL);
     return ;
@@ -266,7 +266,7 @@ reconnect:
             if (ret > 0) {
                 ESP_LOGI(TAG, "OK")
     	    	ESP_LOGI(TAG, "Switch On......");
-                gpio_set_level(GPIO_NUM_4, 1);
+                gpio_set_level(LIGHTSWITCH_GPIO, ON);
                 ESP_LOGI(TAG, "OK")
 
             } else {
@@ -281,7 +281,7 @@ reconnect:
                 if (ret > 0) {
                     ESP_LOGI(TAG, "OK")
         	    	ESP_LOGI(TAG, "Switch Off......");
-                    gpio_set_level(GPIO_NUM_4, 0);
+                    gpio_set_level(LIGHTSWITCH_GPIO, OFF);
                     ESP_LOGI(TAG, "OK")
 
                 } else {
@@ -398,9 +398,23 @@ static void wifi_conn_init(void)
     ESP_ERROR_CHECK( esp_wifi_start() );
 }
 
+static esp_err_t setup_light_gpio()
+{
+	if (!GPIO_IS_VALID_OUTPUT_GPIO(LIGHTSWITCH_GPIO))  //this may be redundant based on what gpio_set_direction checks
+		return ESP_ERR_NOT_SUPPORTED;
+
+	esp_err_t retval = gpio_set_direction(LIGHTSWITCH_GPIO, GPIO_MODE_OUTPUT);
+
+	if (retval != ESP_OK)
+		return retval;
+
+	retval = gpio_set_level(LIGHTSWITCH_GPIO, OFF);
+	return retval;
+
+}
 void app_main(void)
 {
-    gpio_set_direction(GPIO_NUM_4, GPIO_MODE_OUTPUT);
-    ESP_ERROR_CHECK( nvs_flash_init() );
+	ESP_ERROR_CHECK( setup_light_gpio() );
+	ESP_ERROR_CHECK( nvs_flash_init() );
     wifi_conn_init();
 }
