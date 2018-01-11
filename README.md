@@ -1,4 +1,4 @@
-# Openssl + wiFi + GPIO control (for blinking lights based on https connections
+# Openssl + wiFi + GPIO control (for blinking lights based on https connections)
 
 First you should configure the project by "make menuconfig":
   Example Configuration -> 
