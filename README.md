@@ -5,8 +5,8 @@ First you should configure the project by "make menuconfig":
     1. WIFI SSID: WIFI network to which your PC is also connected to. 
     2. WIFI Password: WIFI password
     
-IF you want to test the OpenSSL server demo: 
-  1. compile the code and load the firmware 
+To test out: 
+  1. compile the code and flash it 
   2. input the context of "https://my.esp.ip.goes.here/blink" into your web browser to cause it to blink once an LED on GPIO 4
   2. input the context of "https://my.esp.ip.goes.here/turnon" into your web browser to cause it to turn on an LED on GPIO 4
   2. input the context of "https://my.esp.ip.goes.here/turnoff" into your web browser to cause it to turn off an LED on GPIO 4
