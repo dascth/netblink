@@ -1,4 +1,4 @@
-menu "Example Configuration"
+menu "Configure Netblink Options"
 
 config WIFI_SSID
     string "WiFi SSID"
