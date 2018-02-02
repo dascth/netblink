@@ -4,6 +4,11 @@
 
 #include "sdkconfig.h"
 
+// Default #define values (if not =y, then ends up not being defined)
+#ifndef CONFIG_OUTPUT_POLARITY_SWAP
+#define CONFIG_OUTPUT_POLARITY_SWAP 0
+#endif
+
 /* The examples use simple WiFi configuration that you can set via
    'make menuconfig'.
 
